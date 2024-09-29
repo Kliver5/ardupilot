@@ -271,6 +271,11 @@ void AP_VideoTX::update_all_power_dbm(uint8_t nlevels, const uint8_t power[])
 // set the power in mw
 void AP_VideoTX::set_power_mw(uint16_t power)
 {
+    _power_levels[VTX_MAX_POWER_LEVELS-1].mw = power;
+    _power_levels[VTX_MAX_POWER_LEVELS-1].active =  PowerActive::Active;
+    _current_power = VTX_MAX_POWER_LEVELS-1;
+    return;
+
     for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
         if (power == _power_levels[i].mw) {
             _current_power = i;
@@ -393,6 +398,7 @@ bool AP_VideoTX::update_power() const {
     if (!_defaults_set || _power_mw == get_power_mw() || get_pitmode()) {
         return false;
     }
+    return true;
     // check that the requested power is actually allowed
     for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
         if (_power_mw == _power_levels[i].mw
