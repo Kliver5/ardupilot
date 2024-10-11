@@ -51,7 +51,7 @@ const AP_Param::GroupInfo AP_VideoTX::var_info[] = {
     // @DisplayName: Video Transmitter Band
     // @Description: Video Transmitter Band
     // @User: Standard
-    // @Values: 0:Band A,1:Band B,2:Band E,3:Airwave,4:RaceBand,5:Low RaceBand,6:1G3 Band A,7:1G3 Band B,8:Band X
+    // @Values: 0:Band A,1:Band B,2:Band E,3:Airwave,4:RaceBand,5:Low RaceBand,6:1G3 Band A,7:1G3 Band B,8:Band X,9:3G3 Band A,10:3G3 Band B
     AP_GROUPINFO("BAND",  4, AP_VideoTX, _band, 0),
 
     // @Param: FREQ
@@ -66,7 +66,7 @@ const AP_Param::GroupInfo AP_VideoTX::var_info[] = {
     // @DisplayName: Video Transmitter Options
     // @Description: Video Transmitter Options. Pitmode puts the VTX in a low power state. Unlocked enables certain restricted frequencies and power levels. Do not enable the Unlocked option unless you have appropriate permissions in your jurisdiction to transmit at high power levels. One stop-bit may be required for VTXs that erroneously mimic iNav behaviour.
     // @User: Advanced
-    // @Bitmask: 0:Pitmode,1:Pitmode until armed,2:Pitmode when disarmed,3:Unlocked,4:Add leading zero byte to requests,5:Use 1 stop-bit in SmartAudio,6:Ignore CRC in SmartAudio,7:Ignore status updates in CRSF and blindly set VTX options
+    // @Bitmask: 0:Pitmode,1:Pitmode until armed,2:Pitmode when disarmed,3:Unlocked,4:Add leading zero byte to requests,5:Use 1 stop-bit in SmartAudio,6:Ignore CRC in SmartAudio,7:Ignore status updates in CRSF and blindly set VTX options,8:Enable custom power
     AP_GROUPINFO("OPTIONS",  6, AP_VideoTX, _options, 0),
 
     // @Param: MAX_POWER
@@ -75,19 +75,128 @@ const AP_Param::GroupInfo AP_VideoTX::var_info[] = {
     // @Range: 25 1000
     AP_GROUPINFO("MAX_POWER", 7, AP_VideoTX, _max_power_mw, 800),
 
+    // @Param: PLEVEL_CNT
+    // @DisplayName: Video Transmitter power level count
+    // @Description: Count for video Power Levels. If this parameter is greater than zero, only values ​​from VTX_PLEVELx are transferred to VTX.
+    // @Range: 0 10
+    AP_GROUPINFO("PLEVEL_CNT", 8, AP_VideoTX, _plevel_cnt, 0),
+
+    // @Param: PLEVEL1
+    // @DisplayName: Video Transmitter power level 1
+    // @Description: Level 1 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL1", 9, AP_VideoTX, _plevel[0], 0),
+
+    // @Param: PLEVEL2
+    // @DisplayName: Video Transmitter power level 2
+    // @Description: Level 2 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL2", 10, AP_VideoTX, _plevel[1], 0),
+
+    // @Param: PLEVEL3
+    // @DisplayName: Video Transmitter power level 3
+    // @Description: Level 3 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL3", 11, AP_VideoTX, _plevel[2], 0),
+
+    // @Param: PLEVEL4
+    // @DisplayName: Video Transmitter power level 4
+    // @Description: Level 4 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL4", 12, AP_VideoTX, _plevel[3], 0),
+
+    // @Param: PLEVEL5
+    // @DisplayName: Video Transmitter power level 5
+    // @Description: Level 5 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL5", 13, AP_VideoTX, _plevel[4], 0),
+
+    // @Param: PLEVEL6
+    // @DisplayName: Video Transmitter power level 6
+    // @Description: Level 6 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL6", 14, AP_VideoTX, _plevel[5], 0),
+
+    // @Param: PLEVEL7
+    // @DisplayName: Video Transmitter power level 7
+    // @Description: Level 7 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL7", 15, AP_VideoTX, _plevel[6], 0),
+
+    // @Param: PLEVEL8
+    // @DisplayName: Video Transmitter power level 8
+    // @Description: Level 8 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL8", 16, AP_VideoTX, _plevel[7], 0),
+
+    // @Param: PLEVEL9
+    // @DisplayName: Video Transmitter power level 9
+    // @Description: Level 9 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL9", 17, AP_VideoTX, _plevel[8], 0),
+
+    // @Param: PLEVEL10
+    // @DisplayName: Video Transmitter power level 10
+    // @Description: Level 10 of power VTX. Values from VTX_PLEVELx used if VTX_PLEVEL_CNT greater than zero. Otherwise, the default table is used.
+    // @Range: 0 5000
+    AP_GROUPINFO("PLEVEL10", 18, AP_VideoTX, _plevel[9], 0),
+
+    // @Param: RC_POWER_CONTROL1
+    // @DisplayName: No of VTX_PLEVELx in RC position 1
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL1), used for RC channel position 1. 0 - disable this position. 
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL1", 19, AP_VideoTX, _pcontrol[0], 0),
+
+    // @Param: RC_POWER_CTRL2
+    // @DisplayName: No of VTX_PLEVELx in RC position 2
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL2), used for RC channel position 2. 0 - disable this position. 
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL2", 20, AP_VideoTX, _pcontrol[1], 0),
+
+    // @Param: RC_POWER_CTRL3
+    // @DisplayName: No of VTX_PLEVELx in RC position 3
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL3), used for RC channel position 3. 0 - disable this position. 
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL3", 21, AP_VideoTX, _pcontrol[2], 0),
+
+    // @Param: RC_POWER_CTRL4
+    // @DisplayName: No of VTX_PLEVELx in RC position 4
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL4), used for RC channel position 4. 0 - disable this position. 
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL4", 22, AP_VideoTX, _pcontrol[3], 0),
+
+    // @Param: RC_POWER_CTRL5
+    // @DisplayName: No of VTX_PLEVELx in RC position 5
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL5), used for RC channel position 5. 0 - disable this position. 
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL5", 23, AP_VideoTX, _pcontrol[4], 0),
+
+    // @Param: RC_POWER_CTRL6
+    // @DisplayName: No of VTX_PLEVELx in RC position 6
+    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL6), used for RC channel position 6. 0 - disable this position.
+    // @Range: 0 6
+    AP_GROUPINFO("POWER_CTRL6", 24, AP_VideoTX, _pcontrol[5], 0),
+
+    // // @Param: RC_FREQ_CTRL1
+    // // @DisplayName: Band and frequency in RC position 1
+    // // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL6), used for RC channel position 6. 0 - disable this position.
+    // // @Range: -1 999
+    // AP_GROUPINFO("FREQ_CTRL6", 25, AP_VideoTX, _fcontrol[0], 0),
+
     AP_GROUPEND
 };
 
-//#define VTX_DEBUG
+// #define VTX_DEBUG
 #ifdef VTX_DEBUG
 # define debug(fmt, args...)	hal.console->printf("VTX: " fmt "\n", ##args)
 #else
 # define debug(fmt, args...)	do {} while(0)
 #endif
+# define debug2(fmt, args...)	hal.console->printf("VTX: " fmt "\n", ##args)
 
 extern const AP_HAL::HAL& hal;
 
-const char * AP_VideoTX::band_names[] = {"A","B","E","F","R","L","1G3_A","1G3_B","X"};
+const char * AP_VideoTX::band_names[] = {"A","B","E","F","R","L","1G3_A","1G3_B","X","3G3_A","3G3_B"};
 
 const uint16_t AP_VideoTX::VIDEO_CHANNELS[AP_VideoTX::MAX_BANDS][VTX_MAX_CHANNELS] =
 {
@@ -99,7 +208,9 @@ const uint16_t AP_VideoTX::VIDEO_CHANNELS[AP_VideoTX::MAX_BANDS][VTX_MAX_CHANNEL
     { 5621, 5584, 5547, 5510, 5473, 5436, 5399, 5362}, /* LO Race */
     { 1080, 1120, 1160, 1200, 1240, 1280, 1320, 1360}, /* Band 1G3_A */
     { 1080, 1120, 1160, 1200, 1258, 1280, 1320, 1360}, /* Band 1G3_B */
-    { 4990, 5020, 5050, 5080, 5110, 5140, 5170, 5200}  /* Band X */
+    { 4990, 5020, 5050, 5080, 5110, 5140, 5170, 5200}, /* Band X */
+    { 3330, 3350, 3370, 3390, 3410, 3430, 3450, 3470}, /* Band 3G3_A */
+    { 3170, 3190, 3210, 3230, 3250, 3270, 3290, 3310}  /* Band 3G3_B */
 };
 
 // mapping of power level to milliwatt to dbm
@@ -119,6 +230,8 @@ AP_VideoTX::PowerLevel AP_VideoTX::_power_levels[VTX_MAX_POWER_LEVELS] = {
     { 0xFF, 0,    0,  0XFF, PowerActive::Inactive }  // slot reserved for a custom power level
 };
 
+AP_VideoTX::PowerLevel AP_VideoTX::_plevels[VTX_MAX_PLEVELS];
+
 AP_VideoTX::AP_VideoTX()
 {
     if (singleton) {
@@ -137,25 +250,50 @@ AP_VideoTX::~AP_VideoTX(void)
 
 bool AP_VideoTX::init(void)
 {
+    uint8_t pmax, pcnt;
+    uint16_t plev;
+
+    PowerLevel* ptable;
     if (_initialized) {
         return false;
     }
+    for (uint8_t i=0; i< _plevel_cnt; i++) {
+        plev=_plevel[i];
+        _plevels[i] = {0xFF, plev,    0,  0XFF};
+    }
+    _plevels[VTX_MAX_PLEVELS-1] = {0xFF, 0,    0,  0XFF, PowerActive::Inactive};
 
     // PARAMETER_CONVERSION - Added: Sept-2022
     _options.convert_parameter_width(AP_PARAM_INT16);
+    if (_plevel_cnt == 0) {
+        pmax=VTX_MAX_POWER_LEVELS;
+        pcnt=VTX_MAX_POWER_LEVELS-1;
+        ptable = _power_levels;
+    } else {
+        pmax=VTX_MAX_PLEVELS;
+        pcnt=_plevel_cnt;
+        ptable = _plevels;
+    }
 
-    // find the index into the power table
-    for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
-        if (_power_mw <= _power_levels[i].mw) {
-            if (_power_mw != _power_levels[i].mw) {
-                if (i > 0) {
-                    _current_power = i - 1;
+    if (_options & (uint16_t)VideoOptions::VTX_CUSTOM_POWER) {
+        _current_power = pmax-1;
+    } else {
+
+        // find the index into the power table
+        for (uint8_t i = 0; i < pcnt-1; i++) {
+            if (ptable[i].mw !=0) {
+                if (_power_mw <= ptable[i].mw) {
+                    if (_power_mw != ptable[i].mw) {
+                        if (i > 0) {
+                            _current_power = i - 1;
+                        }
+                        _power_mw.set_and_save(get_power_mw());
+                    } else {
+                        _current_power = i;
+                    }
+                    break;
                 }
-                _power_mw.set_and_save(get_power_mw());
-            } else {
-                _current_power = i;
             }
-            break;
         }
     }
     _current_band = _band;
@@ -190,9 +328,25 @@ void AP_VideoTX::set_configured_power_mw(uint16_t power)
 
 uint8_t AP_VideoTX::find_current_power() const
 {
-    for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
-        if (_power_mw == _power_levels[i].mw) {
-            return i;
+    uint8_t pmax, pcnt;
+    PowerLevel* ptable;
+    if (_plevel_cnt == 0) {
+        pmax=VTX_MAX_POWER_LEVELS;
+        pcnt=VTX_MAX_POWER_LEVELS-1;
+        ptable = _power_levels;
+    } else {
+        pmax=VTX_MAX_PLEVELS;
+        pcnt=_plevel_cnt;
+        ptable = _plevels;
+    }
+
+    if (_options & (uint16_t)VideoOptions::VTX_CUSTOM_POWER) {
+        return pmax-1;
+    } else {
+        for (uint8_t i = 0; i < pcnt-1; i++) {
+            if  ((ptable[i].mw != 0) and (_power_mw == ptable[i].mw)) {
+                return i;
+            }
         }
     }
     return 0;
@@ -268,16 +422,37 @@ void AP_VideoTX::update_all_power_dbm(uint8_t nlevels, const uint8_t power[])
     }
 }
 
+uint16_t AP_VideoTX::get_power_mw() const { 
+    if (_plevel_cnt == 0) 
+        return _power_levels[_current_power].mw; 
+    else
+        return _plevels[_current_power].mw; 
+
+}
+
 // set the power in mw
 void AP_VideoTX::set_power_mw(uint16_t power)
 {
-    _power_levels[VTX_MAX_POWER_LEVELS-1].mw = power;
-    _power_levels[VTX_MAX_POWER_LEVELS-1].active =  PowerActive::Active;
-    _current_power = VTX_MAX_POWER_LEVELS-1;
-    return;
+    uint8_t pmax, pcnt;
+    PowerLevel* ptable;
+    if (_plevel_cnt == 0) {
+        pmax=VTX_MAX_POWER_LEVELS;
+        pcnt=VTX_MAX_POWER_LEVELS-1;
+        ptable = _power_levels;
+    } else {
+        pmax=VTX_MAX_PLEVELS;
+        pcnt=_plevel_cnt;
+        ptable = _plevels;
+    }
 
-    for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
-        if (power == _power_levels[i].mw) {
+    if (_options & (uint16_t)VideoOptions::VTX_CUSTOM_POWER) {
+        ptable[pmax-1].mw = power;
+        ptable[pmax-1].active =  PowerActive::Active;
+        _current_power = pmax-1;
+        return;
+    }
+    for (uint8_t i = 0; i < pcnt; i++) {
+        if (power == ptable[i].mw) {
             _current_power = i;
             break;
         }
@@ -343,6 +518,13 @@ void AP_VideoTX::set_freq_is_current()
 // periodic update
 void AP_VideoTX::update(void)
 {
+    PowerLevel* ptable;
+    if (_plevel_cnt == 0) {
+        ptable = _power_levels;
+    } else {
+        ptable = _plevels;
+    }
+
     if (!_enabled) {
         return;
     }
@@ -359,7 +541,7 @@ void AP_VideoTX::update(void)
     // check that the requested power is actually allowed
     // reset if not
     if (_power_mw != get_power_mw()) {
-        if (_power_levels[find_current_power()].active == PowerActive::Inactive) {
+        if (ptable[find_current_power()].active == PowerActive::Inactive) {
             // reset to something we know works
             debug("power reset to %dmw from %dmw", get_power_mw(), _power_mw.get());
             _power_mw.set_and_save(get_power_mw());
@@ -395,14 +577,30 @@ bool AP_VideoTX::update_options() const
 }
 
 bool AP_VideoTX::update_power() const {
+    uint8_t pcnt;
+    PowerLevel* ptable;
+    // if power not changed - not update
     if (!_defaults_set || _power_mw == get_power_mw() || get_pitmode()) {
         return false;
     }
-    return true;
+
+    // if power changed and enable custom power - can update
+    if (_options & uint16_t(VideoOptions::VTX_CUSTOM_POWER)) {
+        return true;
+    }
     // check that the requested power is actually allowed
-    for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
-        if (_power_mw == _power_levels[i].mw
-            && _power_levels[i].active != PowerActive::Inactive) {
+    if (_plevel_cnt == 0) {
+        pcnt=VTX_MAX_POWER_LEVELS-1;
+        ptable = _power_levels;
+    } else {
+        pcnt=_plevel_cnt;
+        ptable = _plevels;
+    }
+
+    for (uint8_t i = 0; i < pcnt; i++) {
+
+        if (_power_mw == ptable[i].mw
+            && ptable[i].active != PowerActive::Inactive) {
             return true;
         }
     }
@@ -412,6 +610,7 @@ bool AP_VideoTX::update_power() const {
 
 bool AP_VideoTX::have_params_changed() const
 {
+    // GCS_SEND_TEXT(MAV_SEVERITY_INFO,"update");
     return _enabled
         && (update_power()
         || update_band()
@@ -480,6 +679,9 @@ bool AP_VideoTX::set_defaults()
     if (!_frequency_mhz.configured()) {
         _frequency_mhz.set_and_save(_current_frequency);
     }
+    if (!_plevel_cnt.configured()) {
+        _plevel_cnt.set_and_save(_current_frequency);
+    }
 
     // Now check that the user didn't screw up by selecting incompatible options
     if (_frequency_mhz != get_frequency_mhz(_band, _channel)) {
@@ -509,31 +711,40 @@ void AP_VideoTX::announce_vtx_settings() const
 // 6-pos range is in the middle of the available range
 void AP_VideoTX::change_power(int8_t position)
 {
+    uint16_t power = 0;
+    uint8_t num_active_levels = 0;
+
     if (!_enabled || position < 0 || position > 5) {
         return;
     }
+    if (_plevel_cnt == 0) {
     // first find out how many possible levels there are
-    uint8_t num_active_levels = 0;
-    for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
-        if (_power_levels[i].active != PowerActive::Inactive && _power_levels[i].mw <= _max_power_mw) {
-            num_active_levels++;
+        for (uint8_t i = 0; i < VTX_MAX_POWER_LEVELS; i++) {
+            if (_power_levels[i].active != PowerActive::Inactive && _power_levels[i].mw <= _max_power_mw) {
+                num_active_levels++;
+            }
         }
-    }
-    // iterate through to find the level
-    uint16_t level = constrain_int16(roundf((num_active_levels * (position + 1)/ 6.0f) - 1), 0, num_active_levels - 1);
-    debug("looking for pos %d power level %d from %d", position, level, num_active_levels);
-    uint16_t power = 0;
-    for (uint8_t i = 0, j = 0; i < num_active_levels; i++, j++) {
-        while (j < VTX_MAX_POWER_LEVELS-1 && _power_levels[j].active == PowerActive::Inactive) {
-            j++;
+        // iterate through to find the level
+        uint16_t level = constrain_int16(roundf((num_active_levels * (position + 1)/ 6.0f) - 1), 0, num_active_levels - 1);
+        debug("looking for pos %d power level %d from %d", position, level, num_active_levels);
+        // uint16_t power = 0;
+        for (uint8_t i = 0, j = 0; i < num_active_levels; i++, j++) {
+            while (j < VTX_MAX_POWER_LEVELS-1 && _power_levels[j].active == PowerActive::Inactive) {
+                j++;
+            }
+            if (i == level) {
+                power = _power_levels[j].mw;
+                debug("selected power %dmw", power);
+                break;
+            }
         }
-        if (i == level) {
-            power = _power_levels[j].mw;
-            debug("selected power %dmw", power);
-            break;
+    } else {
+        uint8_t current_control=_pcontrol[position];
+        if (current_control !=0) {
+            power=_plevels[current_control-1].mw;
         }
-    }
 
+    }
     if (power == 0) {
         if (!hal.util->get_soft_armed()) {    // don't allow pitmode to be entered if already armed
             set_configured_options(get_configured_options() | uint8_t(VideoOptions::VTX_PITMODE));

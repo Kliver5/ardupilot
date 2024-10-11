@@ -22,6 +22,9 @@
 
 #define VTX_MAX_CHANNELS 8
 #define VTX_MAX_POWER_LEVELS 10
+#define VTX_MAX_PLEVELS 11
+#define VTX_MAX_PLEVELS 11
+#define VTX_MAX_CONTROL_POS 6
 
 class AP_VideoTX {
 public:
@@ -51,6 +54,7 @@ public:
         VTX_SA_ONE_STOP_BIT   = (1 << 5),
         VTX_SA_IGNORE_CRC     = (1 << 6),
         VTX_CRSF_IGNORE_STAT  = (1 << 7),
+        VTX_CUSTOM_POWER  =     (1 << 8),
     };
 
     static const char *band_names[];
@@ -65,6 +69,8 @@ public:
         BAND_1G3_A,
         BAND_1G3_B,
         BAND_X,
+        BAND_3G3_A,
+        BAND_3G3_B,
         MAX_BANDS
     };
 
@@ -89,6 +95,9 @@ public:
     };
 
     static PowerLevel _power_levels[VTX_MAX_POWER_LEVELS];
+    static PowerLevel _plevels[VTX_MAX_PLEVELS];
+    static int8_t* _pcontrols[];
+    static int8_t* _fcontrols[];
 
     static const uint16_t VIDEO_CHANNELS[MAX_BANDS][VTX_MAX_CHANNELS];
 
@@ -111,7 +120,8 @@ public:
     void update_all_power_dbm(uint8_t nlevels, const uint8_t levels[]);
     void set_configured_power_mw(uint16_t power);
     uint16_t get_configured_power_mw() const { return _power_mw; }
-    uint16_t get_power_mw() const { return _power_levels[_current_power].mw; }
+    // uint16_t get_power_mw() const { return _power_levels[_current_power].mw; }
+    uint16_t get_power_mw() const;
 
     // get the power in dbm, rounding appropriately
     uint8_t get_configured_power_dbm() const {
@@ -201,6 +211,45 @@ private:
 
     AP_Int8 _enabled;
     bool _current_enabled;
+
+    AP_Int8 _plevel_cnt;
+    AP_Int16 _plevel[VTX_MAX_PLEVELS-1];
+    // AP_Int16 _plevel_1;
+    // AP_Int16 _plevel_2;
+    // AP_Int16 _plevel_3;
+    // AP_Int16 _plevel_4;
+    // AP_Int16 _plevel_5;
+    // AP_Int16 _plevel_6;
+    // AP_Int16 _plevel_7;
+    // AP_Int16 _plevel_8;
+    // AP_Int16 _plevel_9;
+    // AP_Int16 _plevel_10;
+
+    AP_Int16 _pname[VTX_MAX_PLEVELS-1];
+    // AP_Int16 _pname_2;
+    // AP_Int16 _pname_3;
+    // AP_Int16 _pname_4;
+    // AP_Int16 _pname_5;
+    // AP_Int16 _pname_6;
+    // AP_Int16 _pname_7;
+    // AP_Int16 _pname_8;
+    // AP_Int16 _pname_9;
+    // AP_Int16 _pname_10;
+
+
+    AP_Int8 _pcontrol[VTX_MAX_CONTROL_POS];
+    // AP_Int8 _pcontrol_2;
+    // AP_Int8 _pcontrol_3;
+    // AP_Int8 _pcontrol_4;
+    // AP_Int8 _pcontrol_5;
+    // AP_Int8 _pcontrol_6;
+
+    AP_Int8 _fcontrol[VTX_MAX_CONTROL_POS];
+    // AP_Int8 _fcontrol_2;
+    // AP_Int8 _fcontrol_3;
+    // AP_Int8 _fcontrol_4;
+    // AP_Int8 _fcontrol_5;
+    // AP_Int8 _fcontrol_6;
 
     bool _initialized;
     // when defaults have been configured
