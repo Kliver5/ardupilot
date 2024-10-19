@@ -140,8 +140,8 @@ public:
     // change the video power based on switch input
     void change_power(int8_t position);
     // get / set the frequency band
-    void set_band(uint8_t band) { _current_band = band; }
-    void set_configured_band(uint8_t band) { _band.set_and_save_ifchanged(band); }
+    void set_band(uint8_t band) { _current_band = band;}
+    void set_configured_band(uint8_t band) { _band.set_and_save_ifchanged(band);}
     uint8_t get_configured_band() const { return _band; }
     uint8_t get_band() const { return _current_band; }
     bool update_band() const { return _defaults_set && _band != _current_band; }
@@ -152,6 +152,8 @@ public:
     uint8_t get_channel() const { return _current_channel; }
     bool update_channel() const { return _defaults_set && _channel != _current_channel; }
     void update_configured_channel_and_band();
+    // change the video power based on switch input
+    void change_freq(int8_t position);
     // get / set vtx option
     void set_options(uint16_t options) { _current_options = options; }
     void set_configured_options(uint16_t options) { _options.set_and_save_ifchanged(options); }
@@ -214,42 +216,8 @@ private:
 
     AP_Int8 _plevel_cnt;
     AP_Int16 _plevel[VTX_MAX_PLEVELS-1];
-    // AP_Int16 _plevel_1;
-    // AP_Int16 _plevel_2;
-    // AP_Int16 _plevel_3;
-    // AP_Int16 _plevel_4;
-    // AP_Int16 _plevel_5;
-    // AP_Int16 _plevel_6;
-    // AP_Int16 _plevel_7;
-    // AP_Int16 _plevel_8;
-    // AP_Int16 _plevel_9;
-    // AP_Int16 _plevel_10;
-
-    AP_Int16 _pname[VTX_MAX_PLEVELS-1];
-    // AP_Int16 _pname_2;
-    // AP_Int16 _pname_3;
-    // AP_Int16 _pname_4;
-    // AP_Int16 _pname_5;
-    // AP_Int16 _pname_6;
-    // AP_Int16 _pname_7;
-    // AP_Int16 _pname_8;
-    // AP_Int16 _pname_9;
-    // AP_Int16 _pname_10;
-
-
     AP_Int8 _pcontrol[VTX_MAX_CONTROL_POS];
-    // AP_Int8 _pcontrol_2;
-    // AP_Int8 _pcontrol_3;
-    // AP_Int8 _pcontrol_4;
-    // AP_Int8 _pcontrol_5;
-    // AP_Int8 _pcontrol_6;
-
     AP_Int8 _fcontrol[VTX_MAX_CONTROL_POS];
-    // AP_Int8 _fcontrol_2;
-    // AP_Int8 _fcontrol_3;
-    // AP_Int8 _fcontrol_4;
-    // AP_Int8 _fcontrol_5;
-    // AP_Int8 _fcontrol_6;
 
     bool _initialized;
     // when defaults have been configured

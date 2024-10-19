@@ -228,6 +228,7 @@ private:
     AP_OSD_Setting clk;
     AP_OSD_Setting callsign;
     AP_OSD_Setting vtx_power;
+    AP_OSD_Setting vtx_freq;
     AP_OSD_Setting hgt_abvterr{false, 23, 7};
     AP_OSD_Setting fence{false, 14, 9};
     AP_OSD_Setting rngf;
@@ -330,6 +331,9 @@ private:
     void draw_callsign(uint8_t x, uint8_t y);
     void draw_current2(uint8_t x, uint8_t y);
     void draw_vtx_power(uint8_t x, uint8_t y);
+    void draw_vtx_freq(uint8_t x, uint8_t y);
+    void draw_vtx_channel(uint8_t x, uint8_t y);
+    void draw_vtx_channel_freq(uint8_t x, uint8_t y);
     void draw_hgt_abvterr(uint8_t x, uint8_t y);
 #if AP_FENCE_ENABLED
     void draw_fence(uint8_t x, uint8_t y);

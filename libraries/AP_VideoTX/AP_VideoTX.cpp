@@ -141,47 +141,77 @@ const AP_Param::GroupInfo AP_VideoTX::var_info[] = {
     // @Range: 0 5000
     AP_GROUPINFO("PLEVEL10", 18, AP_VideoTX, _plevel[9], 0),
 
-    // @Param: RC_POWER_CONTROL1
+    // @Param: POWER_CTRL1
     // @DisplayName: No of VTX_PLEVELx in RC position 1
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL1), used for RC channel position 1. 0 - disable this position. 
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL1), used for RC channel position 1. 0 - disable this position. 
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL1", 19, AP_VideoTX, _pcontrol[0], 0),
 
-    // @Param: RC_POWER_CTRL2
+    // @Param: POWER_CTRL2
     // @DisplayName: No of VTX_PLEVELx in RC position 2
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL2), used for RC channel position 2. 0 - disable this position. 
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL2), used for RC channel position 2. 0 - disable this position. 
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL2", 20, AP_VideoTX, _pcontrol[1], 0),
 
-    // @Param: RC_POWER_CTRL3
+    // @Param: POWER_CTRL3
     // @DisplayName: No of VTX_PLEVELx in RC position 3
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL3), used for RC channel position 3. 0 - disable this position. 
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL3), used for RC channel position 3. 0 - disable this position. 
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL3", 21, AP_VideoTX, _pcontrol[2], 0),
 
-    // @Param: RC_POWER_CTRL4
+    // @Param: POWER_CTRL4
     // @DisplayName: No of VTX_PLEVELx in RC position 4
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL4), used for RC channel position 4. 0 - disable this position. 
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL4), used for RC channel position 4. 0 - disable this position. 
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL4", 22, AP_VideoTX, _pcontrol[3], 0),
 
-    // @Param: RC_POWER_CTRL5
+    // @Param: POWER_CTRL5
     // @DisplayName: No of VTX_PLEVELx in RC position 5
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL5), used for RC channel position 5. 0 - disable this position. 
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL5), used for RC channel position 5. 0 - disable this position. 
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL5", 23, AP_VideoTX, _pcontrol[4], 0),
 
-    // @Param: RC_POWER_CTRL6
+    // @Param: POWER_CTRL6
     // @DisplayName: No of VTX_PLEVELx in RC position 6
-    // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL6), used for RC channel position 6. 0 - disable this position.
+    // @Description: If RCx_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_POWER_CTRL6), used for RC channel position 6. 0 - disable this position.
     // @Range: 0 6
     AP_GROUPINFO("POWER_CTRL6", 24, AP_VideoTX, _pcontrol[5], 0),
 
-    // // @Param: RC_FREQ_CTRL1
-    // // @DisplayName: Band and frequency in RC position 1
-    // // @Description: If RC_OPTION is 94:VTX POWER value VTX_PLEVELx (x is the value VTX_RC_POWER_CTRL6), used for RC channel position 6. 0 - disable this position.
-    // // @Range: -1 999
-    // AP_GROUPINFO("FREQ_CTRL6", 25, AP_VideoTX, _fcontrol[0], 0),
+    // @Param: FREQ_CTRL1
+    // @DisplayName: Band and frequency in RC position 1
+    // @Description: If RCx_OPTION is 178:VTX Frequency value VTX_FREQ_CTRL1 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL1", 25, AP_VideoTX, _fcontrol[0], -1),
+
+    // @Param: FREQ_CTRL2
+    // @DisplayName: Band and frequency in RC position 2
+    // @Description: If RCx_OPTION is 178:VTX Frequency value VTX_FREQ_CTRL2 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL2", 26, AP_VideoTX, _fcontrol[1], -1),
+
+    // @Param: FREQ_CTRL3
+    // @DisplayName: Band and frequency in RC position 3
+    // @Description: If RCx_OPTION is 178:VTX Frequency value VTX_FREQ_CTRL3 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL3", 27, AP_VideoTX, _fcontrol[2], -1),
+
+    // @Param: FREQ_CTRL4
+    // @DisplayName: Band and frequency in RC position 4
+    // @Description: If RCx_OPTION is 178:VTX Frequency value VTX_RC_CTRL4 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL4", 28, AP_VideoTX, _fcontrol[3], -1),
+
+    // @Param: FREQ_CTRL5
+    // @DisplayName: Band and frequency in RC position 5
+    // @Description: If RCx_OPTION is 178:VTX Frequency value VTX_FREQ_CTRL5 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL5", 29, AP_VideoTX, _fcontrol[4], -1),
+
+    // @Param: FREQ_CTRL6
+    // @DisplayName: Band and frequency in RCx position 6
+    // @Description: If RCx_OPTION is 178:VTX Frequency, value VTX_FREQ_CTRL6 set band and channel of VTX. Value 0 - set band 0 and channel 0, value 1 - band 0 channel 1, value 15 - band 1 channel 5. -1 - no change frequnce if RCx in this position.
+    // @Range: -1 999
+    AP_GROUPINFO("FREQ_CTRL6", 30, AP_VideoTX, _fcontrol[5], -1),
 
     AP_GROUPEND
 };
@@ -278,7 +308,7 @@ bool AP_VideoTX::init(void)
     if (_options & (uint16_t)VideoOptions::VTX_CUSTOM_POWER) {
         _current_power = pmax-1;
     } else {
-
+        _current_power=0;
         // find the index into the power table
         for (uint8_t i = 0; i < pcnt-1; i++) {
             if (ptable[i].mw !=0) {
@@ -451,12 +481,31 @@ void AP_VideoTX::set_power_mw(uint16_t power)
         _current_power = pmax-1;
         return;
     }
+    // if not custom power set _custom_power  from table
+    _current_power =0;
+    for (uint8_t i = 0; i < pcnt-1; i++) {
+        if (ptable[i].mw !=0) {
+            if (power <= ptable[i].mw) {
+                if (power != ptable[i].mw) {
+                    if (i > 0) {
+                        _current_power = i - 1;
+                    }
+                } else {
+                    _current_power =i;
+                }
+                break;
+            }
+        }
+    }
+    // oled find _current_power
+/*
     for (uint8_t i = 0; i < pcnt; i++) {
         if (power == ptable[i].mw) {
             _current_power = i;
             break;
         }
     }
+*/
 }
 
 // set the power "level"
@@ -507,7 +556,22 @@ void AP_VideoTX::set_power_is_current()
 {
     set_power_dbm(get_configured_power_dbm());
 }
+/*
+void AP_VideoTX::set_band(uint8_t band) { 
+    debug2("set_band: _current_band: %d, new band %d, _band %d",  _current_band, band, _band.get());
+    _current_band = band;
+}
 
+void AP_VideoTX::set_configured_band(uint8_t band) { 
+    debug2("set_configured_band: Current band: %d, new band %d, _current_band: %d", _band.get(),band, _current_band);
+    _band.set_and_save_ifchanged(band);
+    _band.set_and_save(band);
+    uint16_t freq= get_frequency_mhz(band,get_configured_channel());
+    debug2("New frequency: %d", freq);
+
+    set_configured_frequency_mhz(freq);
+}
+*/
 void AP_VideoTX::set_freq_is_current()
 {
     _current_frequency = _frequency_mhz;
@@ -515,18 +579,20 @@ void AP_VideoTX::set_freq_is_current()
     _current_channel = _channel;
 }
 
+
 // periodic update
 void AP_VideoTX::update(void)
 {
     PowerLevel* ptable;
+
+    if (!_enabled) {
+        return;
+    }
+
     if (_plevel_cnt == 0) {
         ptable = _power_levels;
     } else {
         ptable = _plevels;
-    }
-
-    if (!_enabled) {
-        return;
     }
 
     // manipulate pitmode if pitmode-on-disarm or power-on-arm is set
@@ -622,6 +688,7 @@ bool AP_VideoTX::have_params_changed() const
 // update the configured frequency to match the channel and band
 void AP_VideoTX::update_configured_frequency()
 {
+    // _frequency_mhz.set_and_save(freq);
     _frequency_mhz.set_and_save(get_frequency_mhz(_band, _channel));
 }
 
@@ -630,6 +697,7 @@ void AP_VideoTX::update_configured_channel_and_band()
 {
     VideoBand band;
     uint8_t channel;
+
     if (get_band_and_channel(_frequency_mhz, band, channel)) {
         _band.set_and_save(band);
         _channel.set_and_save(channel);
@@ -754,6 +822,29 @@ void AP_VideoTX::change_power(int8_t position)
             set_configured_options(get_configured_options() & ~uint8_t(VideoOptions::VTX_PITMODE));
         }
         set_configured_power_mw(power);
+    }
+}
+
+void AP_VideoTX::change_freq(int8_t position)
+{
+    uint16_t freq = 0;
+    uint8_t band = 0;
+    uint8_t channel = 0;
+
+
+    if (!_enabled || position < 0 || position > 5) {
+        return;
+    }
+    int8_t current_control=_fcontrol[position];
+    if (current_control !=-1) {
+        band=current_control / 10;
+        channel=current_control % 10;
+        freq=VIDEO_CHANNELS[band][channel];
+    }
+
+    if (freq != 0) {
+        set_configured_band(band);
+        set_configured_channel(channel);
     }
 }
 

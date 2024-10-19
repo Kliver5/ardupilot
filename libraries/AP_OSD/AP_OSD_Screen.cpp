@@ -927,6 +927,37 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @Description: Vertical position on screen
     // @Range: 0 21
     AP_SUBGROUPINFO(vtx_power, "VTX_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: VTX_FREQ_EN
+    // @DisplayName: VTX_FREQ_EN
+    // @Description: Displays VTX Band, Channel and Frequency
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: VTX_FREQ_X
+    // @DisplayName: VTX_FREQ_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: VTX_FREQ_Y
+    // @DisplayName: VTX_FREQ_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
+    AP_SUBGROUPINFO(vtx_freq, "VTX_FREQ", 63, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: VTX_CH_EN
+    // @DisplayName: VTX_CH_EN
+    // @Description: Displays VTX Band and Channel
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: VTX_CH_X
+    // @DisplayName: VTX_CH_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: VTX_CH_Y
+    // @DisplayName: VTX_CH_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
 #endif  // AP_VIDEOTX_ENABLED
 
 #if AP_TERRAIN_AVAILABLE
@@ -2488,6 +2519,17 @@ void AP_OSD_Screen::draw_vtx_power(uint8_t x, uint8_t y)
     }
     backend->write(x, y, !vtx->is_configuration_finished(), "%4hu%c", powr, SYMBOL(SYM_MW));
 }
+
+void AP_OSD_Screen::draw_vtx_freq(uint8_t x, uint8_t y)
+{
+    AP_VideoTX *vtx = AP_VideoTX::get_singleton();
+    if (!vtx) {
+        return;
+    }
+    uint16_t freq;
+    freq = vtx->get_frequency_mhz();
+    backend->write(x, y, !vtx->is_configuration_finished(), "%s:%1hu:%4hu", vtx->band_names[vtx->get_configured_band()], vtx->get_configured_channel()+1,freq);
+}
 #endif  // AP_VIDEOTX_ENABLED
 
 #if AP_TERRAIN_AVAILABLE
@@ -2602,6 +2644,7 @@ void AP_OSD_Screen::draw(void)
 #endif
 #if AP_VIDEOTX_ENABLED
     DRAW_SETTING(vtx_power);
+    DRAW_SETTING(vtx_freq);
 #endif
 
 #if HAL_WITH_ESC_TELEM

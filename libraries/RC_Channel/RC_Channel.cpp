@@ -237,6 +237,7 @@ const AP_Param::GroupInfo RC_Channel::var_info[] = {
     // @Values{Copter, Rover, Plane, Blimp}: 175:Camera Lens
     // @Values{Plane}: 176:Quadplane Fwd Throttle Override enable
     // @Values{Copter, Rover, Plane, Blimp}: 177:Mount LRF enable
+    // @Values{Copter, Rover, Plane}: 178:VTX Frequency
     // @Values{Rover}: 201:Roll
     // @Values{Rover}: 202:Pitch
     // @Values{Rover}: 207:MainSail
@@ -654,6 +655,7 @@ void RC_Channel::init_aux_function(const aux_func_t ch_option, const AuxSwitchPo
     case AUX_FUNC::SCRIPTING_8:
 #if AP_VIDEOTX_ENABLED
     case AUX_FUNC::VTX_POWER:
+    case AUX_FUNC::VTX_FREQ:
 #endif
     case AUX_FUNC::OPTFLOW_CAL:
     case AUX_FUNC::TURBINE_START:
@@ -818,6 +820,13 @@ bool RC_Channel::read_aux()
         int8_t position;
         if (read_6pos_switch(position)) {
             AP::vtx().change_power(position);
+            return true;
+        }
+        return false;
+    } else if (_option == AUX_FUNC::VTX_FREQ) {
+        int8_t position;
+        if (read_6pos_switch(position)) {
+            AP::vtx().change_freq(position);
             return true;
         }
         return false;

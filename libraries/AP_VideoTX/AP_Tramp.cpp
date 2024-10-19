@@ -337,8 +337,8 @@ void AP_Tramp::process_requests()
         // Note after config a status update request is made, a new status
         // request is made, this request is handled above and should prevent
         // subsequent config updates if the config is now correct
+        AP_VideoTX& vtx = AP::vtx();
         if (retry_count > 0 && ((now - last_time_us) >= TRAMP_MIN_REQUEST_PERIOD_US)) {
-            AP_VideoTX& vtx = AP::vtx();
             // Config retries remain and min request period exceeded, check freq
             if (!is_race_lock_enabled() && vtx.update_frequency()) {
                 debug("Updating frequency to %uMhz", vtx.get_configured_frequency_mhz());
@@ -347,6 +347,7 @@ void AP_Tramp::process_requests()
 
                 // Set flag
                 configUpdateRequired = true;
+                vtx.set_configuration_finished(false);
             } else if (!is_race_lock_enabled() && vtx.update_power()) {
                 debug("Updating power to %umw\n", vtx.get_configured_power_mw());
                 // Power can be and needs to be updated, issue request
@@ -354,9 +355,10 @@ void AP_Tramp::process_requests()
 
                 // Set flag
                 configUpdateRequired = true;
+                vtx.set_configuration_finished(false);
             } else if (vtx.update_options()) {
                 // Pit mode needs to be updated, issue request
-                send_command('I', vtx.has_option(AP_VideoTX::VideoOptions::VTX_PITMODE) ? 0 : 1);
+                send_command('I', vtx.has_option(AP_VideoTX::VideoOptions::VTX_PITMODE) ? 1 : 0);
 
                 // Set flag
                 configUpdateRequired = true;
@@ -379,6 +381,8 @@ void AP_Tramp::process_requests()
 
         /* Was a config update made? */
         if (!configUpdateRequired) {
+            if (!vtx.is_configuration_finished())
+                 vtx.set_configuration_finished(true);
             /* No, look to continue monitoring */
             if ((now - last_time_us) >= TRAMP_STATUS_REQUEST_PERIOD_US) {
                 // Request period exceeded, issue freq/power/pit query
