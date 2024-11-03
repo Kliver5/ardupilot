@@ -61,7 +61,7 @@
 
 #define SMARTAUDIO_BANDCHAN_TO_INDEX(band, channel) (band * VTX_MAX_CHANNELS + (channel))
 
-//#define SA_DEBUG
+// #define SA_DEBUG
 
 class AP_SmartAudio
 {
@@ -195,7 +195,7 @@ private:
 
     // ready to go
     volatile bool _initialised;
-
+    int8_t _errors=0;
     // RingBuffer to store outgoing request.
     ObjectBuffer<Packet> requests_queue{SMARTAUDIO_BUFFER_CAPACITY};
 

@@ -94,12 +94,13 @@ void AP_SmartAudio::loop()
             Packet current_command;
 
             // repeatedly initialize UART until we know what the VTX is
-            if (!_initialised) {
+            // if (!_initialised) {
                 // request settings every second
-                if (requests_queue.is_empty() && !hal.util->get_soft_armed() && now - _last_request_sent_ms > 1000) {
+                // if (requests_queue.is_empty() && !hal.util->get_soft_armed() && now - _last_request_sent_ms > 1000) {
+                if (requests_queue.is_empty()  && now - _last_request_sent_ms > 1000) {
                     request_settings();
                 }
-            }
+            // }
 
             if (requests_queue.pop(current_command)) {
                 // send the popped command from bugger
@@ -141,6 +142,7 @@ void AP_SmartAudio::loop()
             _port->discard_input();
             _inline_buffer_length = 0;
             _is_waiting_response = false;
+            _errors++;
             debug("response timeout");
         } else if (_initialised) {
             if (AP::vtx().have_params_changed() ||_vtx_power_change_pending
@@ -151,12 +153,21 @@ void AP_SmartAudio::loop()
                 // we've tried to update something, re-request the settings so that they
                 // are reflected correctly
                 request_settings();
-            } else if (is_configuration_pending()) {
-                AP::vtx().announce_vtx_settings();
-                set_configuration_pending(false);
-                vtx.set_configuration_finished(true);
+            } else {
+                if (is_configuration_pending()) {
+                    AP::vtx().announce_vtx_settings();
+                    set_configuration_pending(false);
+                }
+                if  (!vtx.is_configuration_finished())
+                    vtx.set_configuration_finished(true);
             }
         }
+        if (_errors >= 10)
+            if (_initialised) {
+                _initialised = false;
+                vtx.set_configuration_finished(false);
+                debug("Link with VTX lost");
+            }
     }
 }
 
@@ -354,6 +365,10 @@ bool AP_SmartAudio::read_response(uint8_t *response_buffer)
     _is_waiting_response = false;
 
     bool correct_parse = parse_response_buffer(response_buffer);
+    if (!correct_parse)
+        _errors++;
+    else
+        _errors=0;
     response_buffer = nullptr;
     _inline_buffer_length=0;
     _packet_size = 0;
@@ -516,16 +531,22 @@ void AP_SmartAudio::update_vtx_settings(const Settings& settings)
     vtx.set_channel(settings.channel);
     // SA21 sends us a complete packet with the supported power levels
     if (settings.version == SMARTAUDIO_SPEC_PROTOCOL_v21) {
+        vtx.update_all_power_dbm(settings.num_power_levels, settings.power_levels);
         vtx.set_power_dbm(settings.power_in_dbm);
         // learn them all
-        vtx.update_all_power_dbm(settings.num_power_levels, settings.power_levels);
+        // vtx.update_all_power_dbm(settings.num_power_levels, settings.power_levels);
     } else if (settings.version == SMARTAUDIO_SPEC_PROTOCOL_v2) {
         vtx.set_power_level(settings.power, AP_VideoTX::PowerActive::Active);
         // learn them all - it's not possible to know the mw values in v2.0 so just have to go from the spec
-        uint8_t power[] { 0, 14, 23, 27, 29 };
-        vtx.update_all_power_dbm(5, power);
+    //<kliver>
+        // uint8_t power[] { 0, 14, 23, 27, 29 };
+        // vtx.update_all_power_dbm(5, power);
+    // </kliver>
     } else {
-        vtx.set_power_level(settings.power, AP_VideoTX::PowerActive::Active);
+        // kliver
+        // vtx.set_power_level(settings.power, AP_VideoTX::PowerActive::Active);
+        // error v1 set dac????
+        vtx.set_power_dac(settings.power, AP_VideoTX::PowerActive::Active);
     }
     // it seems like the spec is wrong, on a unify pro32 this setting is inverted
     _vtx_use_set_freq = !(settings.mode & 1);

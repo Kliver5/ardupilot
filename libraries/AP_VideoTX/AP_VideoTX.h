@@ -124,17 +124,20 @@ public:
     uint16_t get_power_mw() const;
 
     // get the power in dbm, rounding appropriately
-    uint8_t get_configured_power_dbm() const {
-        return _power_levels[find_current_power()].dbm;
-    }
+    uint8_t get_configured_power_dbm() const;
+    //  {
+    //     return _power_levels[find_current_power()].dbm;
+    // }
     // get the power "level"
-    uint8_t get_configured_power_level() const {
-        return _power_levels[find_current_power()].level & 0xF;
-    }
+    uint8_t get_configured_power_level() const;
+    //  {
+    //     return _power_levels[find_current_power()].level & 0xF;
+    // }
     // get the power "dac"
-    uint8_t get_configured_power_dac() const {
-        return _power_levels[find_current_power()].dac;
-    }
+    uint8_t get_configured_power_dac() const;
+    //  {
+    //     return _power_levels[find_current_power()].dac;
+    // }
 
     bool update_power() const;
     // change the video power based on switch input
@@ -167,6 +170,9 @@ public:
     void set_enabled(bool enabled);
     bool get_enabled() const { return _enabled; }
     bool update_enabled() const { return _defaults_set && _enabled != _current_enabled; }
+    // plevel_cnt
+    void set_plevel_cnt(uint8_t plevel_cnt) {_current_pcnt=plevel_cnt;}
+
 
     // have the parameters been updated
     bool have_params_changed() const;
@@ -215,7 +221,9 @@ private:
     bool _current_enabled;
 
     AP_Int8 _plevel_cnt;
+    uint8_t _current_pcnt;
     AP_Int16 _plevel[VTX_MAX_PLEVELS-1];
+    AP_Int16 _pdata[VTX_MAX_PLEVELS-1];
     AP_Int8 _pcontrol[VTX_MAX_CONTROL_POS];
     AP_Int8 _fcontrol[VTX_MAX_CONTROL_POS];
 

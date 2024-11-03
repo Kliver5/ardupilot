@@ -107,6 +107,7 @@ char AP_Tramp::handle_response(void)
     }
     case 'v': {
         const uint16_t freq = response_buffer[2]|(response_buffer[3] << 8);
+        configreq_count=0;
         // Check we're not reading the request (indicated by freq zero)
         if (freq != 0) {
             // Got response, update device status
@@ -255,6 +256,8 @@ void AP_Tramp::send_query(uint8_t cmd)
 {
     // Reset receive buffer and issue command
     reset_receiver();
+    if ((cmd == 'v') && (configreq_count<10))
+        configreq_count++;
     send_command(cmd, 0);
 }
 
@@ -293,13 +296,13 @@ void AP_Tramp::process_requests()
     // Read response from device
     const char replyCode = receive_response();
     const uint32_t now = AP_HAL::micros();
+    AP_VideoTX& vtx = AP::vtx();
 
 #ifdef TRAMP_DEBUG
     if (replyCode != 0) {
         debug("receive response '%c'", replyCode);
     }
 #endif
-
     // Act on state
     switch (status) {
     case TrampStatus::TRAMP_STATUS_OFFLINE: {
@@ -337,7 +340,6 @@ void AP_Tramp::process_requests()
         // Note after config a status update request is made, a new status
         // request is made, this request is handled above and should prevent
         // subsequent config updates if the config is now correct
-        AP_VideoTX& vtx = AP::vtx();
         if (retry_count > 0 && ((now - last_time_us) >= TRAMP_MIN_REQUEST_PERIOD_US)) {
             // Config retries remain and min request period exceeded, check freq
             if (!is_race_lock_enabled() && vtx.update_frequency()) {
@@ -490,6 +492,8 @@ void AP_Tramp::update()
     }
 
     process_requests();
+    if ((configreq_count >=10) && vtx.is_configuration_finished())
+        vtx.set_configuration_finished(false);
 }
 
 // we missed a response too many times - update the baud rate in case the temperature has increased

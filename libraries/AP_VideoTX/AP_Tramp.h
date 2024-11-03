@@ -135,6 +135,7 @@ private:
 
     // Retry count
     uint8_t retry_count = VTX_TRAMP_MAX_RETRIES;
+    int8_t configreq_count = 0;
 
     // Receive state machine
     enum class ReceiveState {
