@@ -23,7 +23,6 @@
 #define VTX_MAX_CHANNELS 8
 #define VTX_MAX_POWER_LEVELS 10
 #define VTX_MAX_PLEVELS 11
-#define VTX_MAX_PLEVELS 11
 #define VTX_MAX_CONTROL_POS 6
 
 class AP_VideoTX {
@@ -143,8 +142,8 @@ public:
     // change the video power based on switch input
     void change_power(int8_t position);
     // get / set the frequency band
-    void set_band(uint8_t band) { _current_band = band;}
-    void set_configured_band(uint8_t band) { _band.set_and_save_ifchanged(band);}
+    void set_band(uint8_t band) { _current_band = band; }
+    void set_configured_band(uint8_t band) { _band.set_and_save_ifchanged(band); }
     uint8_t get_configured_band() const { return _band; }
     uint8_t get_band() const { return _current_band; }
     bool update_band() const { return _defaults_set && _band != _current_band; }
